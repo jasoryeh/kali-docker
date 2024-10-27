@@ -1,19 +1,5 @@
 #!/bin/bash
 
-MAC_DONTSLEEPONCHARGER() {
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "(macOS) Setting your computer to not sleep on charger (you can revert these settings to your desired value in Settings > Battery > Options > Prevent automatic sleeping on power adapter when the display is off > Set to Off)"
-        sudo pmset -c sleep 0
-    fi
-}
-
-MAC_SLEEPONCHARGER() {
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "(macOS) Setting your computer to not sleep on charger (you can revert these settings to your desired value in Settings > Battery > Options > Prevent automatic sleeping on power adapter when the display is off)"
-        sudo pmset -c sleep 1
-    fi
-}
-
 KILL_CONTAINER() {
   echo "Killing Kali container..."
   docker rm -f kali-linux || true
@@ -22,7 +8,6 @@ KILL_CONTAINER() {
 
 KILL() {
   echo "Exiting..."
-  MAC_SLEEPONCHARGER
   KILL_CONTAINER
   exit 0
 }
@@ -76,10 +61,8 @@ if [ -z $NOOPEN ]; then
     open $URL
 fi
 
-MAC_DONTSLEEPONCHARGER
 docker logs -f -n 999999 kali-linux
 # TODO: fix docker logs exiting the script above here
-MAC_SLEEPONCHARGER
 
 echo "Exiting Kali container.."
 KILL
